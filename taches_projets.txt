@@ -1,0 +1,41 @@
+Partie 1: 
+0. data cleaning : au niveau du prix ( 0.0001,00)->0
+0. Representativité des données ?
+1. Exploration des données : les 3 dataset
+	1.1 : exploration pour le dataset des individus qui n'ont jamais suivi de MOOC
+	1.2 exploration pour le dataset des individus qui ont suivi et terminé des MOOCs
+	1.3  exploration pour le dataset des individus qui ont suivi mais pas terminé des MOOCs
+
+Partie 2 :
+2. Test d'hypothèses pour le dataset : data_suivi ( terminé et non terminé terminé)
+
+2.1 : hypothèse 1  : terminer les moocs ou pas ne depend ni du genre ni du background ni du niveau actuel ni de la formation suivie ni de l'accompagenment pedagogique ni de l'aide finanacier ni des outis fournit pour les examens et cours , video_cours, transcription, forum_discussion, diapositive cours ni de la plateform utilisé  ni de edt ni de période d'apprentissage des mooc? 
+
+2.2 hypthese 3 : terminer ses mooc ou pas depend  de la motivattion envers les certificats, trouver un emploi, perfomer dans ses projets travail(table coisés pour chaque cas : test chisq)
+
+ 
+
+
+2.3 hypothese 3: la satisfaction( discretiser en deux :0-5 et 5-10) ne depend pas de : backround, formation, niveau actuel ...
+
+
+2.4 hypothése 4: QUELLES SONT LES POPULATIONS LES PLUS  SATISFAITES Des MOOC ? ( test de Welch voir rapport Cdv)
+	.FIG vs FIP
+	. FIG vs MSC
+	.FIG vs master od science
+	.FIG vs master specialisé
+	.Prepa vs univer
+	. Prepa vs ecole d'in
+	.Prepa vs DUT 
+	...
+
+2.5 hypothese 5 : la satisfaction depend des domaines?
+2.6
+
+
+
+
+
+Partie 3 : analyse factorielles des corresepondances(AFC).
+
+
