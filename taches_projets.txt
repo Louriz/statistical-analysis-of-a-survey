@@ -16,10 +16,10 @@ Partie 2 :
  
 
 
-2.3 hypothese 3: la satisfaction( discretiser en deux :0-5 et 5-10) ne depend pas de : backround, formation, niveau actuel ...
+2.3 hypothese 3: la satisfaction( discretiser en deux :0-5 et 5-10) ne depend pas de : backround, formation, niveau actuel ... ( qlq doit faire cette partie)
 
 
-2.4 hypothése 4: QUELLES SONT LES POPULATIONS LES PLUS  SATISFAITES Des MOOC ? ( test de Welch voir rapport Cdv)
+2.4 hypothése 4: QUELLES SONT LES POPULATIONS LES PLUS  SATISFAITES Des MOOC ? ( test de Welch voir rapport Cdv) Boushab
 	.FIG vs FIP
 	. FIG vs MSC
 	.FIG vs master od science
@@ -30,12 +30,12 @@ Partie 2 :
 	...
 
 2.5 hypothese 5 : la satisfaction depend des domaines?
-2.6
+2.6  ANOVA : compraison des moyennes de prix, satisfaction, temps alloué par cours pour les differentes formations, backround, sex
 
 
 
 
 
-Partie 3 : analyse factorielles des corresepondances(AFC).
+Partie 3 : analyse factorielles des corresepondances(AFC).    Riahi
 
 
