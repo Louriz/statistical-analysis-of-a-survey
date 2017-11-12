@@ -25,7 +25,8 @@ colnames(my_data)<-my_col_names
 ```
 ### Choisir lignes intérressants :
 ```{r}
-my_data2<-my_data[c(3:nrow(my_data)),]
+## j'ai nettoyé les lignes à la main donc on prend tout les lignes
+my_data2<-my_data[c(1:nrow(my_data)),]
 
 ```
 
@@ -40,6 +41,14 @@ my_data2$commentaire<-NULL
 ```{r}
 library("dplyr")
 ```
+```{r}
+str(my_data2)
+
+```
+```{r}
+#change from factor to numeric the feature : temps_alloue_cours
+my_data2$temps_alloue_cours<-as.numeric(my_data2$temps_alloue_cours)
+```
 
 #### jamais suivi :
 ```{r}
@@ -48,6 +57,10 @@ data_jamais<-filter(my_data2,a_suivi=="Jamais")
 data_jamais<-data_jamais[ , ! apply( data_jamais , 2 , function(x) all(is.na(x)) ) ]
 # Write CSV in R
 write.csv(data_jamais, file = "data_jamais.csv")
+```
+
+```{r}
+str(data_jamais)
 ```
 
 
@@ -74,4 +87,170 @@ data_termine<-data_termine[ , ! apply( data_termine , 2 , function(x) all(is.na(
 write.csv(data_termine, file = "data_termine.csv")
 
 ```
+##Exploration des données : suivi terminé/non terminé
+#### Summary about all features :
+```{r}
+
+summary(data_suivi)
+```
+
+
+###Boxplot pour les variables numériques: 
+```{r}
+par(mfrow=c(2,3),mar=c(2.5,2.5,0,0))
+boxplot(data_suivi$age,main="Age ")
+boxplot(data_suivi$prix,main="Prix ")
+boxplot(data_suivi$nbr_certificat,main="Nombre de certificat ")
+boxplot(data_suivi$satisfaction,main="Satisfaction")
+boxplot(data_suivi$temps_alloue_cours,main="temps alloué par cours")
+```
+Commentaire : Toutes les variables présentent des outliers surtout prix et nombre de certificat.
+
+
+### exploration des variables qualitatives :
+```{r}
+boxplot(data_suivi$prix~data_suivi$formation,data=data_suivi, main="Distribution des prix vs formation",ylab="valeurs des prix", xlab="formation suivie",las=2)
+```
+
+
+
+```{r}
+boxplot(data_suivi$satisfaction~data_suivi$formation,data=data_suivi, main="Distribution de la satisfaction vs formation",ylab="satisfaction", xlab="formation suivie",las=2)
+```
+On peut dire que tout le monde est satisfait de ses moocs.
+```{r}
+boxplot(data_suivi$satisfaction~data_suivi$background,data=data_suivi, main="Distribution de la satisfaction vs background",ylab="satisfaction", xlab="background",las=2)
+```
+```{r}
+boxplot(data_suivi$satisfaction~data_suivi$sexe,data=data_suivi, main="Distribution de la satisfaction vs background",ylab="satisfaction", xlab="sexe",las=2)
+```
+```{r}
+boxplot(data_suivi$satisfaction~data_suivi$niveau_actuel,data=data_suivi, main="Distribution de la satisfaction vs niveau actuel",ylab="satisfaction", xlab="niveau actuel",las=2)
+```
+```{r}
+boxplot(data_suivi$satisfaction~data_suivi$vacances_etude,data=data_suivi, main="Distribution du temps alloué par cours vs vacances_etudes",ylab="satisfaction", xlab="vacances_etudes",las=2)
+```
+boxplot(data_suivi$satisfaction~data_suivi$vacances_etude,data=data_suivi, main="Distribution du temps alloué par cours vs vacances_etudes",ylab="satisfaction", xlab="vacances_etudes",las=2)
+
+```{r}
+boxplot(data_suivi$satisfaction~data_suivi$motivation_certificat,data=data_suivi, main="Distribution du temps alloué par cours vs motivation certificat",ylab="satisfaction", xlab="motivation certificat",las=2)
+```
+Les master recherche accordent plus du temps pour leurs moocs. 
+
+```{r}
+count1 <- table(data_suivi$formation, data_suivi$a_suivi)
+barplot(count1, main="proportion terminé/non par formation", xlab="a_suivi", col=c("blue","red","black","white","yellow","orange"),las=2,legend.text = T,args.legend=list(x = "topleft"))
+```
+Seuls les FIG et FIL ( nantes) qui ont n'ont pas fini leurs moocs.
+
+```{r}
+count2 <- table(data_suivi$sexe, data_suivi$a_suivi)
+barplot(count2, main="proportion terminé/non par sex", xlab="a_suivi", col=c("blue","red"),legend = rownames(count2),las=2)
+```
+Les hommes sont les plus qui ne finissent pas leurs moocs.
+
+```{r}
+count3 <- table(data_suivi$mooc_inclu_etude, data_suivi$a_suivi)
+barplot(count3, main="proportion terminé/non par mooc_inclu_etude", xlab="a_suivi", col=c("blue","red"),legend = rownames(count3),las=2)
+```
+la majoroté des personnes qui n'ont pas terminé ses moocs ils ont fait ses mooc pendant leur etude=> ce qui peût être naturelle car il y une charge de travail pendant les études.
+
+###Test statistiques :
+####Hypthèse 1 : la terminaison des mooc ne depend pas du genre :
+Chi-square test basics :
+
+Chi-square test examines whether rows and columns of a contingency table are statistically significantly associated.
+
+Null hypothesis (H0): the row and the column variables of the contingency table are independent.
+Alternative hypothesis (H1): row and column variables are dependent
+
+```{r}
+# contingency table
+table(data_suivi$a_suivi,data_suivi$sexe)
+```
+```{r}
+chisq_sexe <- chisq.test(data_suivi$a_suivi,data_suivi$sexe)
+chisq_sexe
+```
+le test donne une p-value de 1 ce qui permet avec un rique de 5% de garder l'hypthèse nulle et donc conclure que les deux variables catégorielles sont  indépendentes.
+
+
+####Hypthèse 2 : la terminaison des mooc ne depend pas de la formation suivie :
+```{r}
+# contingency table
+table(data_suivi$a_suivi,data_suivi$formation)
+```
+```{r}
+chisq_formation <- chisq.test(data_suivi$a_suivi,data_suivi$formation)
+chisq_formation
+```
+Avec un risque de 5% on garde H0, donc les les deux variables  sont  indépendentes.
+
+
+
+
+Il y a une forte association positive entre la colonne FIP et la rangée "Oui, je l'ai suivi..pas terminé"
+
+
+
+####Hypthèse 3 : la terminaison des mooc ne depend pas du background du répondant :
+
+```{r}
+table(data_suivi$a_suivi,data_suivi$background)
+```
+
+```{r}
+chisq_backround <- chisq.test(data_suivi$a_suivi,data_suivi$background)
+chisq_backround
+```
+
+Toujours avec un risque de 5% on accepte H0==> les colonnes et les lignes sont indépendents.
+####Hypthèse 4: la terminaison des mooc ne depend pas de la plateforme utilisée :
+
+```{r}
+#table(data_suivi$a_suivi,data_suivi$plateformes_utilisees)
+```
+```{r}
+chisq_plateforme <- chisq.test(data_suivi$a_suivi,data_suivi$plateformes_utilisees)
+chisq_plateforme
+```
+même conclusion
+
+
+
+####Hypthèse 4: la terminaison des mooc ne depend pas de périodes de suivi des mooc :
+
+
+```{r}
+table(data_suivi$a_suivi,data_suivi$vacances_etude)
+```
+
+
+```{r}
+chisq_periode <- chisq.test(data_suivi$a_suivi,data_suivi$vacances_etude)
+chisq_periode
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
