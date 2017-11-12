@@ -9,9 +9,12 @@ Partie 1:
 Partie 2 :
 2. Test d'hypothèses pour le dataset : data_suivi ( terminé et non terminé terminé)
 
-2.1 : hypothèse 1  : terminer les moocs ou pas ne depend ni du genre ni du background ni du niveau actuel ni de la formation suivie ni de l'accompagenment pedagogique ni de l'aide finanacier ni des outis fournit pour les examens et cours , video_cours, transcription, forum_discussion, diapositive cours ni de la plateform utilisé  ni de edt ni de période d'apprentissage des mooc? 
+2.1 : hypothèse 1  : terminer les moocs ou pas ne depend ni du genre ni du background ni du niveau actuel ni de la formation suivie ni 
+                     de l'accompagenment pedagogique ni de l'aide finanacier ni des outis fournit pour les examens et cours , video_cours, 
+                     transcription, forum_discussion, diapositive cours ni de la plateform utilisé  ni de edt ni de période d'apprentissage des mooc? 
 
-2.2 hypthese 3 : terminer ses mooc ou pas depend  de la motivattion envers les certificats, trouver un emploi, perfomer dans ses projets travail(table coisés pour chaque cas : test chisq)
+2.2 hypthese 3 : terminer ses mooc ou pas depend  de la motivattion envers les certificats, trouver un emploi, perfomer dans 
+                 ses projets travail(table coisés pour chaque cas : test chisq) ED-DAHABI
 
  
 
