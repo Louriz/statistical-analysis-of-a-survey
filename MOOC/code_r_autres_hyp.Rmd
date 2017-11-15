@@ -22,7 +22,7 @@ chisq_motivation<-chisq.test(data_suivi$a_suivi,data_suivi$motivation_certificat
 ```{r}
 chisq_motivation
 ```
-
+p-value = 0.3984
 Avec un risque de 5% on garde H0, donc les deux variables sont indépendantes.
 
 
@@ -39,7 +39,7 @@ chisq_emploi<-chisq.test(data_suivi$a_suivi,data_suivi$trouver_emploi)
 ```{r}
 chisq_emploi
 ```
-
+p-value = 0.1597
 Avec un risque de 5% on garde H0, donc les deux variables sont indépendantes.
 
 # Hypothèse 3: La terminaison de moocs ne dépend pas de vouloir                       performer dans ses projets de travail
@@ -53,5 +53,5 @@ chisq_perform<-chisq.test(data_suivi$a_suivi,data_suivi$performer_travail_projet
 
 chisq_perform
 ```
-
+p-value = 0.461
 Avec un risque de 5% on garde H0, donc les deux variables sont indépendantes.
