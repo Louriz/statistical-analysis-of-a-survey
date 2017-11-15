@@ -1,0 +1,57 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+
+Charger la table "suivi":
+
+```{r}
+data_suivi<-read.csv("data_suivi.csv")
+```
+
+# Hypothèse 1: La terminaison de mooc ne dépend pas  de la motivation                 envers les certificats
+
+```{r}
+table(data_suivi$a_suivi,data_suivi$motivation_certificat)
+```
+
+```{r}
+chisq_motivation<-chisq.test(data_suivi$a_suivi,data_suivi$motivation_certificat)
+```
+
+```{r}
+chisq_motivation
+```
+
+Avec un risque de 5% on garde H0, donc les deux variables sont indépendantes.
+
+
+# Hypothèse 2: La terminaison des moocs ne dépend pas de trouver un                   emploi
+
+```{r}
+table(data_suivi$a_suivi,data_suivi$trouver_emploi)
+```
+
+```{r}
+chisq_emploi<-chisq.test(data_suivi$a_suivi,data_suivi$trouver_emploi)
+```
+
+```{r}
+chisq_emploi
+```
+
+Avec un risque de 5% on garde H0, donc les deux variables sont indépendantes.
+
+# Hypothèse 3: La terminaison de moocs ne dépend pas de vouloir                       performer dans ses projets de travail
+
+```{r}
+table(data_suivi$a_suivi,data_suivi$performer_travail_projet)
+```
+
+```{r}
+chisq_perform<-chisq.test(data_suivi$a_suivi,data_suivi$performer_travail_projet)
+
+chisq_perform
+```
+
+Avec un risque de 5% on garde H0, donc les deux variables sont indépendantes.
