@@ -2,13 +2,14 @@
 output:
   pdf_document: default
   html_document: default
+  word_document: default
 ---
 #Projet statistique :
 
 ##Charger les données :
 ###Installer les packages nécessaires :
 ```{r}
-install.packages("xlsx")
+#install.packages("xlsx")
 
 ```
 ###Charger les données :
@@ -230,27 +231,136 @@ table(data_suivi$a_suivi,data_suivi$vacances_etude)
 chisq_periode <- chisq.test(data_suivi$a_suivi,data_suivi$vacances_etude)
 chisq_periode
 ```
+=====================================================================================
 
 
 
+On veut comparer le degré de satisfaction envers les moocs en fonction de la catégorie du répondeur à notre sondage : le sexe a-t-il une influence sur la satisfaction? Et qu'en est-t-il du niveau actuel du répondeur? De sa formation à l'école? Du son background? 
+
+
+#### Hypothèses 5 : Le degrée de satisfaction des femmes et des hommes est le même :
+```{r}
+satisf_homme_femme<-data_suivi[,c("satisfaction","sexe")]
+str(satisf_homme_femme)
+```
+```{r}
+library(plyr); library(dplyr)
+res<-ddply(satisf_homme_femme,~sexe,summarise,mean=mean(satisfaction),sd=sd(satisfaction))
+
+``` 
+le resultat est le suivant :
+
+|sexe|   mean  |   sd |
+|----:|:-----|-------|
+|Femme| 6.578947| 1.926088|
+|Homme| 6.610390| 1.987830|
 
 
 
+Les variances ne sont pas égales, donc allons voir si les distributions sont normales ou non ?
+Pour les hommes : 
+```{r}
+homme_series<-filter(satisf_homme_femme,sexe=="Homme")
+shapiro.test(homme_series$satisfaction)
+```
+La distribution de la satisfcation des hommes n'est pas normale.
+On procéde de même pour les femmes :
+```{r}
+femme_series<-filter(satisf_homme_femme,sexe=="Femme")
+shapiro.test(femme_series$satisfaction)
+```
+Même conclustion qu'avant.
+Donc on doit utiliser un test de Wilcoxon qui est non paramétriques:
+```{r}
+wilcox.test(femme_series$satisfaction,homme_series$satisfaction)
+```
+Avec un risque de 5%, on accepte H0 et donc il n'y a pas de différence de satisfaction entre les hommes et les femmes.
+
+#### Hypothèses 6: Le degrée de satisfaction est le même pour tout les niveaux d'études :
+
+
+```{r}
+satisf_niveau<-data_suivi[,c("satisfaction","niveau_actuel")]
+str(satisf_niveau)
+```
 
 
 
+```{r}
+res2<-ddply(satisf_niveau,~niveau_actuel,summarise,mean=mean(satisfaction),sd=sd(satisfaction))
+```
+Le resultat est le suivant :
+| niveau_actuel|  mean   |sd|       
+|--------------:|:-------|-----------|
+|         BAC +2| 6.000000| 2.380476|
+|         BAC +3| 5.450000| 2.372540|
+|         BAC +4| 7.027778| 1.521017|
+|         BAC +5| 6.866667| 1.914063|
+| BAC +6 ou plus| 6.750000| 1.892969|
+|           <NA>| 6.333333| 1.527525|
+
+Les variances ne sont pas égales, il faut voir la distribution pour choisir le test convenable:
 
 
+```{r}
+bac2<-filter(satisf_niveau,niveau_actuel=="BAC +2")
+shapiro.test(bac2$satisfaction)
+```
+===> avec un risque de 5% la distribution est normale pour BAC +2
+```{r}
+bac3<-filter(satisf_niveau,niveau_actuel=="BAC +3")
+shapiro.test(bac3$satisfaction)
+
+```
+==>  avec un risque de 5%  Distribution est normale pour BAC+3
+```{r}
+bac4<-filter(satisf_niveau,niveau_actuel=="BAC +4")
+shapiro.test(bac4$satisfaction)
+```
+==> avec un risque de 5%   la distribution n'est pas normale pour BAC+4
+```{r}
+bac5<-filter(satisf_niveau,niveau_actuel=="BAC +5")
+shapiro.test(bac5$satisfaction)
+```
+==>  avec un risque de 5%  non normale pour BAC+5
+
+```{r}
+bac6<-filter(satisf_niveau,niveau_actuel=="BAC +6 ou plus")
+shapiro.test(bac6$satisfaction)
+```
+==>  avec un risque de 5%  ,normale pour BAC+6
+Donc on va utiliser le test de wilcoxon :
+####BAC+2 VS BAC+3 :
+```{r}
+wilcox.test(bac2$satisfaction,bac3$satisfaction)
+```
+avec un risque de 5%, on accepte H0==> les deux niveau ont le même degré de satisfaction.
+####BAC+3 VS BAC+4 :
+
+```{r}
+wilcox.test(bac3$satisfaction,bac4$satisfaction)
+```
+Avec un risque de 5%, on rejete h0===> les deux niveau n'ont pas le même degré de satisfaction. Pour savoir qui est le plus satisfait, on fait le test suivant :
+```{r}
+wilcox.test(bac3$satisfaction,bac4$satisfaction,alternative = "greater")
+```
+
+Avec un risque de 5%, on affirme que le degré de satisfaction des BAC+4 est plus grand à celui des BAC+3.
+####BAC+4 VS BAC+5 :
+```{r}
+wilcox.test(bac4$satisfaction,bac5$satisfaction)
+```
+avec un risque de 5%, on affirme que les deux niveau ont le même degré de satisfaction.
+
+####BAC+5 vS BAC+6 ou plus :
+
+```{r}
+wilcox.test(bac5$satisfaction,bac6$satisfaction)
+```
+avec un risque de 5%, on affirme que les deux niveau ont le même degré de satisfaction.
 
 
+#### Hypothèses 6: Le degrée de satisfaction ne depénd pas du background : ... pareil
 
-
-
-
-
-
-
-
-
-
+###ACF:en cours ...
 
