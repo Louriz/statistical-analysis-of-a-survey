@@ -460,5 +460,96 @@ print('Description de la dimension 2')
 res.desc[[2]]
 ```
 ##Eléments supplémentaires : 
+Comme décrit ci-dessus , le jeu de données poison contient:
+
+des variables continues supplémentaires (Age, prix, Satisfaction, temps_alloue_cours, nbr_certificat)
+des variables qualitatives supplémentaires (Sex, a_suivi,). Ces variables sont utilisées pour colorer les individus par groupes
+'date','a_suivi','performer_travail_projet_1','motivation_certificat_1','trouver_emploi_1','mooc_inclu_etude_1','edt_chargee_1','plateformes_connues','aide_financiere_1','prix_1','outils_exercices_1','sciences_donnees_1','informatique_1','sciences_physiques_1','business_1','arts_1','langues_1','sciences_sociales_1','performer_travail_projet','motivation_certificat','trouver_emploi','nbr_certificat','satisfait_gestion_temps','objectifs_atteints','satisfaction','vacances_etude','temps_alloue_cours','mooc_inclu_etude','edt_chargee','plateformes_utilisees','videos_cours','transcription','diapositives_cours','forum_discussion','examens_exercices','accompagnement_pedagogique','aides_financiere','prix','outils_exercice','sciences_donnees','informatique','sciences_physiques','business','arts','langues','sciences_sociales','sexe','pays','age','est_etudiant','niveau_actuel','formation','background','mail','commentaire')
+```{r}
+final_data<- data_suivi[, c(   "motivation_certificat"   ,   "trouver_emploi",            
+                                    
+  "vacances_etude" ,                    "mooc_inclu_etude"      ,     "edt_chargee" ,              
+     "videos_cours"      ,         "transcription"         ,     "diapositives_cours"  ,      
+ "forum_discussion"   ,        "examens_exercices"   ,       "accompagnement_pedagogique", "aides_financiere" ,         
+                       "outils_exercice" ,           "sciences_donnees"    ,       "informatique" ,             
+ "sciences_physiques" ,       "business"     ,              "arts"    ,                   "langues" ,                  
+ "sciences_sociales" ,                                                                      
+              "niveau_actuel"  ,                        "background" ,"sexe","a_suivi","age","prix","satisfaction","temps_alloue_cours","nbr_certificat")]
+```
+```{r}
+str(final_data)
+```
+
+```{r}
+res.mca <-MCA(final_data,quanti.sup = c(25,26,27,28,29),
+              quali.sup = c(23,24),
+              graph = FALSE,
+              ncp = 10)
+```
+###Résultats :
+Les résultats prédites pour les individus / variables supplémentaires peuvent être extraits comme suit:
+```{r}
+print('Variables qualitatives supplémentaires')
+res.mca$quali.sup
+print('Variables quantitatives supplémentaires')
+res.mca$quanti
+print('Individus supplémentaires')
+res.mca$ind.sup
+```
+###Graphique
+Pour créer un biplot des individus et des variables, tapez ceci:
+```{r}
+# Biplot des individus et des variables
+fviz_mca_biplot (res.mca, repel = TRUE,
+                ggtheme = theme_minimal (),
+                axes=c(3,3),invisible = "var"
+                  )
+```
+```{r}
+# Biplot des individus et des variables
+fviz_mca_biplot (res.mca, repel = TRUE,
+                ggtheme = theme_minimal (),
+                axes=c(4,4),invisible = "var"
+                  )
+```
+```{r}
+# Biplot des individus et des variables
+fviz_mca_biplot (res.mca, repel = TRUE,
+                ggtheme = theme_minimal (),
+                axes=c(5,5),invisible = "var"
+                  )
+```
+
+
+```{r}
+fviz_mca_var (res.mca, choice = "mca.cor",
+             repel = TRUE)
+```
+
+
+Le code R ci-dessous visualise les catégories des variables qualitatives (variables actives et supplémentaires):
+```{r}
+fviz_mca_var(res.mca, repel = TRUE,
+             ggtheme= theme_minimal(),select.var = list(cos2=0.3))
+```
+```{r}
+fviz_mca_var(res.mca, choice = "quanti.sup",
+             ggtheme = theme_minimal())
+```
+
+Commentaire :
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
