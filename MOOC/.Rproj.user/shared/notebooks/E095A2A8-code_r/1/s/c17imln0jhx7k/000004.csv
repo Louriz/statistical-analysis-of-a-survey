@@ -1,0 +1,1 @@
+"0","boxplot(data_suivi$satisfaction~data_suivi$motivation_certificat,data=data_suivi, main=""Distribution du temps alloué par cours vs motivation certificat"",ylab=""satisfaction"", xlab=""motivation certificat"",las=2)"

@@ -1,0 +1,29 @@
+{
+    "collab_server" : "",
+    "contents" : "",
+    "created" : 1510697753551.000,
+    "dirty" : false,
+    "encoding" : "",
+    "folds" : "",
+    "hash" : "0",
+    "id" : "74938F9D",
+    "lastKnownWriteTime" : 6,
+    "last_content_update" : -2147483648,
+    "path" : null,
+    "project_path" : null,
+    "properties" : {
+        "cacheKey" : "1267C692",
+        "caption" : "data_suivi",
+        "contentUrl" : "grid_resource/gridviewer.html?env=&obj=data_suivi&cache_key=1267C692",
+        "displayedObservations" : 115,
+        "environment" : "",
+        "object" : "data_suivi",
+        "preview" : 0,
+        "totalObservations" : 115,
+        "variables" : 36
+    },
+    "relative_order" : 4,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_dataframe"
+}

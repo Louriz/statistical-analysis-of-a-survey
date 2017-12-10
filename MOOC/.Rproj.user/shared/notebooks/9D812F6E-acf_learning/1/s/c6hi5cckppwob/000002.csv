@@ -1,0 +1,2 @@
+"0","# Cos2 des variable sur Dim.1 et Dim.2"
+"0","fviz_cos2(res.mca, choice = ""var"", axes = 1:2)"

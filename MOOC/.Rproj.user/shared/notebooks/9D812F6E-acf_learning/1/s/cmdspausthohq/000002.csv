@@ -1,0 +1,3 @@
+"0","# habillage = indice de la colonne "
+"0","# à utiliser comme variable de regroupement"
+"0","fviz_mca_ind(res.mca, habillage = 2, addEllipses = TRUE)"

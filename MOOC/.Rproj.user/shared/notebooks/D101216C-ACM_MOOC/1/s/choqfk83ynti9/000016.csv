@@ -1,0 +1,4 @@
+"0","fviz_mca_var (res.mca,"
+"0","             repel = TRUE, "
+"0","             axes=c(1,2),"
+"0","         ggtheme = theme_minimal (),select.var = list(cos2=0.25))"

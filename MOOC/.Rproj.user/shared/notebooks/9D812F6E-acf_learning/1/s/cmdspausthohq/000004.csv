@@ -1,0 +1,2 @@
+"0","# habillage = variable de regroupement externe"
+"0","fviz_mca_ind(res.mca, habillage = poison$Vomiting, addEllipses = TRUE)"

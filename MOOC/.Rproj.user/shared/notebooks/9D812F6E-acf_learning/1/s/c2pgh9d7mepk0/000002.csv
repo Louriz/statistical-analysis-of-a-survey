@@ -1,0 +1,2 @@
+"0","# Contribution totale aux dimensions 1 et 2"
+"0","fviz_contrib(res.mca, choice = ""var"", axes = 1:2, top = 15)"

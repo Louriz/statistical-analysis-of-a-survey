@@ -1,0 +1,377 @@
+---
+output:
+  pdf_document: default
+  html_document: default
+---
+#apprentissage d'ACM ( STHDA)
+Je note très bien que la totalité de ce TP se trouve sur le lien suivant :
+http://www.sthda.com/french/articles/38-methodes-des-composantes-principales-dans-r-guide-pratique/75-acm-analyse-des-correspondances-multiples-avec-r-l-essentiel/
+
+L'objectif c'est de faire apprendre l'ACF en utilisant R notebook.
+Rq: J'ai changé quelque codes avec des commentaires de plus.
+##Introduction :
+L’Analyse des Correspondances Multiples (ACM ou MCA pour multiple correspondence analysis) est une extension de l’analyse factorielle des correspondances pour résumer et visualiser un tableau de données contenant plus de deux variables catégorielles. On peut aussi la considérer comme une généralisation de l’analyse en composantes principales lorsque les variables à analyser sont catégorielles plutôt que quantitatives (Abdi and Williams 2010).
+
+L’ACM est généralement utilisée pour analyser des données d’enquête ou de sondage.
+
+L’objectif est d’identifier:
+
+Un groupe de personnes ayant un profil similaire dans leurs réponses aux questions
+Les associations entre les catégories des variables. [ source STHDA]
+
+##Calcul :
+Pour le calcul nous allons utiliser la fonction MCA() inclue dans le package FactoMiner, et pour les visualization nous allons opter pour factoextra.
+##Charger les librararies :
+```{r}
+library(FactoMineR)
+library(factoextra)
+```
+
+##Format des données :
+Nous allons utiliser les données poison dane le package FactoMiner
+```{r}
+data(poison)
+str(poison)
+```
+
+Ces données proviennent d’une enquête menée auprès d’enfants de l’école primaire qui ont subi des intoxications alimentaires. Ils ont été interrogés sur leurs symptômes et sur ce qu’ils ont mangé.
+
+Les données contiennent 55 lignes (individus) et 15 colonnes (variables). Nous n’utiliserons que certain des individus (enfants) et variables pour effectuer l’ACM. Les coordonnées des individus et des variables restantes seront prédites.
+
+Nos données contiennent donc des:
+
+Individus actifs (lignes 1:55): individus qui sont utilisés dans l’ACM.
+Variables actives (colonnes 5:15): variables utilisées dans l’ACM.
+Variables supplémentaires: elles ne participent pas à l’ACM. Les coordonnées de ces variables seront prédites.
+Variables quantitatives supplémentaires (quanti.sup): Colonnes 1 et 2 correspondant aux colonnes age et time, respectivement.
+Variables qualitatives supplémentaires (quali.sup: Colonnes 3 et 4 correspondant aux colonnes Sick et Sex, respectivement. Ces variables seront utilisées pour colorer les individus par groupes.
+Nous commençons par extraire les individus actifs et les variables actives pour l’ACM:
+
+
+```{r}
+poison.active <- poison[1:55, 5:15]
+```
+
+##Résumé des données :
+La fonction summary() peut être utilisée pour calculer la fréquence des catégories des variables. 
+
+Résumés statistiques:
+```{r}
+summary(poison.active)
+```
+La fonctions summary() renvoient la taille des catégories des variables.
+
+Il est également possible de visualiser la fréquence des catégories des variables. Le code R ci-dessous, montre les 4 premières colonnes:
+```{r}
+for (i in 1:4) {
+  plot(poison.active[,i], main = colnames(poison.active)[i],
+       ylab = "Count", col="steelblue", las = 2)
+  }
+```
+Les graphiques ci-dessus peuvent être utilisés pour identifier les catégories à très faible fréquence. Ce type de variables peut fausser l’analyse et doit être supprimé.
+
+
+
+
+##code R pour l'ACM :
+Dans le code R ci-dessous, l’ACM est effectuée uniquement sur les individus / variables actifs:
+```{r}
+res.mca <- MCA (poison.active, graph = FALSE)
+```
+Le résultat de l’ACM est une liste comprenant:
+```{r}
+print(res.mca)
+```
+
+L’objet créé avec la fonction MCA() contient de nombreuses informations trouvées dans de nombreuses listes et matrices différentes. Ces valeurs sont décrites dans la section suivante.
+
+
+##Visualisation et interprétation :
+
+La proportion des variances retenues par les différentes dimensions (axes) peut être extraite à l’aide de la fonction get_eigenvalue() [factoextra package] comme suit:
+```{r}
+eig.val <- get_eigenvalue(res.mca)
+eig.val
+```
+Les dimensions sont ordonnées de manière décroissante et listées en fonction de la quantité de variance expliquée. La dimension 1 explique la plus grande variance, suivie de la dimension 2 et ainsi de suite.
+
+Le pourcentage cumulé expliqué est obtenu en ajoutant les proportions successives de variances expliquées pour obtenir le total courant. Par exemple, 33.52% plus 12.91% est égal à 46.43%, et ainsi de suite. Par conséquent, environ 88.6% de la variance totale est expliquée par les deux premières dimensions.
+
+Les valeurs propres peuvent être utilisées pour déterminer le nombre d’axes à retenir. Il n’y a pas de «règle générale» pour choisir le nombre de dimensions à conserver pour l’interprétation des données. Cela dépend de la question et du besoin du chercheur. Par exemple, si vous êtes satisfait avec 70% des variances totales expliquées, utilisez le nombre de dimensions nécessaires pour y parvenir.
+Note : Notez qu’une analyse est bonne lorsque les premières dimensions représentent une grande partie de la variabilité.
+Dans notre analyse, les cinqs premiers axes expliquent 74.64% de la variance totale. C’est un pourcentage acceptable.
+
+Une autre méthode pour déterminer le nombre de dimensions est de regarder le graphique des valeurs propres (scree plot), ordonnées de la plus grande à la plus petite valeur. Le nombre d’axes est déterminé par le point point, au-delà duquel les valeurs propres restantes sont toutes relativement petites et de tailles comparables.
+Pour visualiser les pourcentages de variances expliquées par chaque dimension de l’ACM, utilisez la fonction fviz_eig() ou fviz_screeplot() [package factoextra]:
+```{r}
+fviz_screeplot (res.mca, addlabels = TRUE, ylim = c (0, 45))
+
+```
+Il est également possible de calculer une valeur propre moyenne au-dessus de laquelle l’axe doit être conservé dans le résultat.
+Nos données contiennent 55 lignes et 15 colonnes.
+
+Si les données étaient aléatoires, la valeur attendue de la valeur propre pour chaque axe serait 1 / (nrow (poison.active) -1) = 1/54 = 1.85% en termes de lignes.
+
+De même, l’axe moyen devrait représenter 1 / (ncol (poison.active) -1) = 1/14 = 7.14% en termes de 15 colonnes.
+===========================================================================================
+
+Tout axe avec une contribution supérieure au maximum de ces deux pourcentages devrait être considéré comme important et inclus dans la solution pour l’interprétation des données.
+===========================================================================================
+Donc on doit retenir selon M . T. Bendixen 6 axes principales. Ces 6 axes ont pour inertie totale : 81.75% ( une valeur acceptable).
+
+Le code R ci-dessous, montre le graphique des valeurs propres avec une droite en pointillée rouge spécifiant la valeur propre moyenne:
+```{r}
+fviz_screeplot (res.mca) +
+  geom_hline (yintercept = 7.14, linetype = 2, color = "red")
+```
+
+##Biplot :
+La fonction fviz_mca_biplot() [factoextra] permet de visualiser le biplot des individus et des variables: 
+```{r}
+fviz_mca_biplot (res.mca, repel = TRUE, 
+               ggtheme = theme_minimal())
+```
+Dans le graphique ci-dessus, les lignes sont représentées par des points bleus et des colonnes par des triangles rouges.
+
+La distance entre les points lignes ou entre les points colonnes donne une mesure de leur similitude (ou dissemblance). Les points lignes avec un profil similaire sont proches sur le graphique. Il en va de même pour les points colonnes.
+Le graphique montre que :
+  - Les lignes 34,42,33, 26, 48, 49 et 29 sont associés le plus à la colonne Vomit_n.4
+  - etc... 
+  
+##Graphique des variables :
+###Résultats :
+La fonction get_mca_var() [factoextra] sert à extraire les résultats pour les catégories des variables. Cette fonction renvoie une liste contenant les coordonnées, les cos2 et les contributions des catégories:
+
+```{r}
+var <- get_mca_var(res.mca)
+var
+```
+Les composants de get_mca_var() peuvent être utilisés dans le graphique des variables comme suit:
+
+var$coord: coordonnées des variables pour créer un nuage de points
+var$cos2: qualité de représentation des variables.
+var$contrib: contributions (en pourcentage) des variables à la définition des dimensions.
+
+
+
+Les différents composants peuvent être consultés comme suit:
+```{r}
+# Coordonnées
+print('les coordonnées :')
+var$coord
+# Cos2: qualité de représentation
+print('la qualité de représentation :')
+var$cos2
+# Contributions aux axes
+print('la contribution des variables :')
+var$contrib
+```
+Rq: La dimension1 peut alors être écrite sous la forme :
+                  Dim.1 = Nausea_n*0.26739087 - Nausea_y*0.95815062 + ...-Icecream_y*0.04787337
+                  
+Dans cette section, nous décrirons comment visualiser uniquement les catégories des variables. Ensuite, nous mettrons en évidence les catégories en fonction soit de leurs qualités de représentation, soit de leurs contributions aux dimensions.
+###Corrélation entre les variables et les axes principaux :
+Pour visualiser la corrélation entre les variables et les axes principaux de l’ACM, tapez ceci:
+```{r}
+fviz_mca_var (res.mca, choice = "mca.cor",
+            repel = TRUE, 
+            ggtheme = theme_minimal ())
+```
++ Le graphique ci-dessus permet d’identifier les variables les plus corrélées avec chaque axe. Les corrélations au carré entre les variables et les axes sont utilisées comme coordonnées.
+
++ On constate que les variables Diarrhae, Abdominals et Fever sont les plus corrélées avec la dimension 1. De même, les variables Courgette et Potato sont les plus corrélées avec la dimension 2.
+###Coordonnées des catégories des variables :
+Le code R ci-dessous affiche les coordonnées de chacune des catégories des variables dans chaque dimension (1, 2 et 3):
+```{r}
+head(round(var$coord, 2), 4)
+```
+
+Utilisez la fonction fviz_mca_var() [factoextra] pour visualiser uniquement les catégories des variables:
+```{r}
+fviz_mca_var (res.mca,
+             repel = TRUE, 
+             ggtheme = theme_minimal ())
+```
+Le graphique ci-dessus montre les relations entre les catégories des variables. Il peut être interprété comme suit:
+
+  + Les catégories avec un profil similaire sont regroupées ( exemple : Cheese_n, Mayo_n, Abdo_n,Fever_n).
+  + Les catégories corrélées négativement sont positionnées sur les côtés opposés de l’origine du graphique (quadrants opposés)(Exemple : Diarrheaèy,Abdo_y,..)
+  + La distance entre les catégories et l’origine mesure la qualité des catégories. Les points qui sont loin de l’origine sont bien représentés par l’ACM( exemple : Cheese_n, Courg_n,Potato_n, Diarrhea_y,..).
+  
+###Qualité de représentation des catégories des variables :
+Les deux dimensions 1 et 2 capturent 46% de l’inertie totale (variation) contenue dans les données. Tous les points ne sont pas aussi bien représentés par les deux dimensions.
+
+La qualité de représentation, appelée cosinus carré (cos2), mesure le degré d’association entre les catégories des variables et les dimensions. Le cos2 peut être extrait comme suit:
+```{r}
+head(var$cos2, 4)
+```
+
+Si une catégorie d’une variable donnée est bien représentée par deux dimensions, la somme des cos2 est proche de 1. Pour certains éléments, plus de 2 dimensions sont nécessaires pour représenter parfaitement les données.
+
+Il est possible de colorer les variables en fonction de la valeur de leur cos2 à l’aide de l’argument col.var = "cos2". Cela produit un gradient de couleurs. Dans ce cas, l’argument gradient.cols peut être utilisé pour spécifier une palette de couleur personnalisée. Par exemple, gradient.cols = c("white", "blue", "red") signifie que:
+
+  - les variables à faible valeur de cos2 seront colorées en “white” (blanc)
+  - les variables avec des valeurs moyennes de cos2 seront colorées en “blue” (bleu)
+  - les variables avec des valeurs élevées de cos2 seront colorées en “red” (rouge)
+  
+  
+```{r}
+# Colorer en fonction du cos2
+fviz_mca_var(res.mca, col.var = "cos2",
+             gradient.cols = c("#00AFBB", "#E7B800", "#FC4E07"), 
+             repel = TRUE, 
+             ggtheme = theme_minimal())
+```
+Vous pouvez visualiser le cos2 des catégories sur toutes les dimensions en utilisant le package corrplot:
+```{r}
+library("corrplot")
+corrplot(var$cos2, is.corr=FALSE)
+```
+Il est également possible de créer un barplot du cos2 des variables avec la fonction fviz_cos2() [factoextra]:
+```{r}
+# Cos2 des variable sur Dim.1 et Dim.2
+fviz_cos2(res.mca, choice = "var", axes = 1:2)
+```
+Notez que les catégories Fish_n, Fish_y, Icecream_n et Icecream_y ne sont pas très bien représentées par les deux premières dimensions. Cela implique que la position des points correspondants sur le graphique doit être interprétée avec prudence.
+
+
+
+###Contribution des variables aux dimensions :
+La contribution des variables (en %) à la définition des dimensions peut être extraite comme suit:
+```{r}
+head(round(var$contrib,2), 4)
+```
+
+Les variables avec les plus grandes valeurs, contribuent le mieux à la définition des dimensions. Les catégories qui contribuent le plus à Dim.1 et Dim.2 sont les plus importantes pour expliquer la variabilité dans le jeu de données.
+
+La fonction fviz_contrib() [factoextra] peut être utilisée pour faire un barplot de la contribution des catégories des variables. Le code R ci-dessous montre le top 15 des catégories contribuant aux dimensions:
+```{r}
+# Contributions des variables à la dimension 1
+fviz_contrib (res.mca, choice = "var", axes = 1, top = 15)
+# Contributions des variables à la dimension 2
+fviz_contrib (res.mca, choice = "var", axes = 2, top = 15)
+```
+Les contributions totales aux dimensions 1 et 2 sont obtenues comme suit:
+```{r}
+# Contribution totale aux dimensions 1 et 2
+fviz_contrib(res.mca, choice = "var", axes = 1:2, top = 15)
+```
+
+
+
+La ligne en pointillé rouge, sur le graphique ci-dessus, indique la valeur moyenne attendue sous l’hypothèse nulle.
+
+On peut voir que:
+
+les catégories Abdo_n, Diarrhea_n, Fever_n et Mayo_n sont les plus importantes dans la définition de la première dimension.
+Les catégories Courg_n, Potato_n, Vomit_y et Icecream_n contribuent le plus à la dimension 2
+Les catégories les plus importantes peuvent être mises en évidence sur le graphique comme suit:
+```{r}
+fviz_mca_var(res.mca, col.var = "contrib",
+             gradient.cols = c("#00AFBB", "#E7B800", "#FC4E07"), 
+             repel = TRUE, 
+             ggtheme = theme_minimal()
+             )
+```
+
+
+
+Le graphique ci-dessus donne une idée du pôle des dimensions auquel les catégories contribuent réellement.
+
+Il est évident que les catégories Abdo_n, Diarrhea_n, Fever_n et Mayo_n ont une contribution importante au pôle positif de la première dimension, tandis que les catégories Fever_y et Diarrhea_y ont une contribution majeure au pôle négatif de la première dimension; etc, ….
+
+
+##Graphique des individus :
+Résultats
+
+La fonction get_mca_ind() [factoextra] sert à extraire les résultats pour les individus. Cette fonction renvoie une liste contenant les coordonnées, la cos2 et les contributions des individus:
+```{r}
+ind <- get_mca_ind (res.mca)
+ind
+```
+
+
+
+Pour accéder aux différents composants, utilisez ceci:
+```{r}
+print(' Coordonnées')
+head(ind$coord)
+print(' Qualité de representation')
+head(ind$cos2)
+print('Contributions')
+head(ind$contrib)
+```
+###graphique: qualité et contribution
+Utilisez la fonction fviz_ca_row() [dans factoextra] pour visualiser uniquement les points lignes:
+```{r}
+fviz_mca_ind(res.mca, repel = TRUE)
+```
+Le graphique ci-dessus montre les relations entre les points lignes:
+
+Les lignes avec un profil similaire sont regroupées.
+Les lignes corrélées négativement sont positionnées sur des côtés opposés de l’origine de du graphique (quadrants opposés).
+La distance entre les points lignes et l’origine mesure la qualité des points lignes sur le graphique. Les points lignes qui sont loin de l’origine sont bien représentés sur le graphique.
+
+
+La fonction fviz_mca_ind() [factoextra] sert à visualiser uniquement des individus. Comme les variables, il est également possible de colorer les individus en fonction de leurs cos2:
+```{r}
+fviz_mca_ind(res.mca, col.ind = "cos2", 
+             gradient.cols = c("#00AFBB", "#E7B800", "#FC4E07"),
+             repel = TRUE, 
+             ggtheme = theme_minimal())
+```
+
+
+Le graphique ci-dessus montre les relations entre les points lignes:
+
+Les lignes avec un profil similaire sont regroupées.
+Les lignes corrélées négativement sont positionnées sur des côtés opposés de l’origine de du graphique (quadrants opposés).
+La distance entre les points lignes et l’origine mesure la qualité des points lignes sur le graphique. Les points lignes qui sont loin de l’origine sont bien représentés sur le graphique.
+Il est également possible de créer un bar plot du cos2 des lignes en utilisant la fonction fviz_cos2() [factoextra]:
+```{r}
+# Cos2 des lignes sur Dim.1 et Dim.2
+fviz_cos2(res.mca, choice = "ind", axes = 1:2,las=2)
+```
+
+###Colorer les individus par groupes :
+Le code R ci-dessous colore les individus par groupes en utilisant la variable Vomiting. L’argument habillage sert à spécifier la variable à utiliser pour colorer les individus par groupes. Une ellipse de concentration peut également être ajoutée autour de chaque groupe en utilisant l’argument addEllipses = TRUE. Si vous voulez une ellipse de confiance autour du point moyen (centre de gravité) des groupes, utilisez ellipse.type = "confidence". L’argument palette permet de modifier les couleurs du groupe.
+```{r}
+fviz_mca_ind (res.mca,
+             label = "none", # masquer le texte des individus
+             habillage = "Vomiting", # colorer par groupes
+             palette = c ("#00AFBB", "#E7B800"),
+             addEllipses = TRUE, ellipse.type = "confidence",
+             ggtheme = theme_minimal ())
+```
+
+
+
+Notez que, pour spécifier l’argument habillage, il est également possible d’utiliser l’index de la colonne comme suit (habillage = 2). Vous pouvez aussi fournir une variable de regroupement externe comme suit: habillage = poison$Vomiting. Par exemple:
+```{r}
+# habillage = indice de la colonne 
+# à utiliser comme variable de regroupement
+fviz_mca_ind(res.mca, habillage = 2, addEllipses = TRUE)
+# habillage = variable de regroupement externe
+fviz_mca_ind(res.mca, habillage = poison$Vomiting, addEllipses = TRUE)
+```
+
+Si vous souhaitez colorer les individus à l’aide de plusieurs variables catégorielles en même temps, utilisez la fonction fviz_ellipses() [factoextra] comme suit:
+```{r}
+fviz_ellipses(res.mca, c("Vomiting", "Fever"),
+              geom = "point")
+```
+
+
+###Description des dimensions :
+La fonction dimdesc() [FactoMineR] peut être utilisée pour identifier les variables les plus corrélées avec une dimension donnée:
+```{r}
+res.desc <- dimdesc (res.mca, axes = c(1,2))
+print(' Description de la dimension 1')
+res.desc[[1]]
+
+print('Description de la dimension 2')
+res.desc[[2]]
+```
+##Eléments supplémentaires : en cours  ...
+
+

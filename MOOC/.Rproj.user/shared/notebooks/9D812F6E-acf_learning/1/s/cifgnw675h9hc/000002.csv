@@ -1,0 +1,6 @@
+"0","fviz_mca_ind (res.mca,"
+"0","             label = ""none"", # masquer le texte des individus"
+"0","             habillage = ""Vomiting"", # colorer par groupes"
+"0","             palette = c (""#00AFBB"", ""#E7B800""),"
+"0","             addEllipses = TRUE, ellipse.type = ""confidence"","
+"0","             ggtheme = theme_minimal ())"

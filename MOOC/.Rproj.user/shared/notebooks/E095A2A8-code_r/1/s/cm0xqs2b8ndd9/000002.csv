@@ -1,0 +1,10 @@
+"0","# xlsx files"
+"0","library(xlsx)"
+"2","package ‘xlsx’ was built under R version 3.4.2"
+"2","Loading required package: rJava
+"
+"2","package ‘rJava’ was built under R version 3.4.2"
+"2","Loading required package: xlsxjars
+"
+"2","package ‘xlsxjars’ was built under R version 3.4.2"
+"0","my_data <- read.xlsx(""dataset.xlsx"",sheetIndex = 1,as.data.frame = T,encoding = 'UTF-8')"

@@ -1,0 +1,2 @@
+"0","count2 <- table(data_suivi$sexe, data_suivi$a_suivi)"
+"0","barplot(count2, main=""proportion terminé/non par sex"", xlab=""a_suivi"", col=c(""blue"",""red""),legend = rownames(count2),las=2)"

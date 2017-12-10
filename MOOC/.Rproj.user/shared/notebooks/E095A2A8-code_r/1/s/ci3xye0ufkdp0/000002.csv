@@ -1,0 +1,3 @@
+"0","data_non_termine<-filter(my_data2,a_suivi  %in% c(""Oui, je l'ai suivi mais je ne l'ai pas terminé""))"
+"0","data_non_termine<-data_non_termine[ , ! apply( data_non_termine , 2 , function(x) all(is.na(x)) ) ]"
+"0","write.csv(data_non_termine, file = ""data_non_termine.csv"")"

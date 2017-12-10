@@ -1,0 +1,1 @@
+"0","res2<-ddply(satisf_niveau,~niveau_actuel,summarise,mean=mean(satisfaction),sd=sd(satisfaction))"

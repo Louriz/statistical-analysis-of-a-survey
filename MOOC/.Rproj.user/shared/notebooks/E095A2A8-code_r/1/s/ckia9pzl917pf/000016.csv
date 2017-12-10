@@ -1,0 +1,2 @@
+"0","count1 <- table(data_suivi$formation, data_suivi$a_suivi)"
+"0","barplot(count1, main=""proportion terminé/non par formation"", xlab=""a_suivi"", col=c(""blue"",""red"",""black"",""white"",""yellow"",""orange""),las=2,legend.text = T,args.legend=list(x = ""topleft""))"

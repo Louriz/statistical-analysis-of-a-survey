@@ -1,0 +1,1 @@
+"0","boxplot(data_suivi$satisfaction~data_suivi$niveau_actuel,data=data_suivi, main=""Distribution de la satisfaction vs niveau actuel"",ylab=""satisfaction"", xlab=""niveau actuel"",las=2)"

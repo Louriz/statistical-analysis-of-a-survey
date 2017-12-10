@@ -1,0 +1,1 @@
+"0","boxplot(data_suivi$prix~data_suivi$formation,data=data_suivi, main=""Distribution des prix vs formation"",ylab=""valeurs des prix"", xlab=""formation suivie"",las=2)"

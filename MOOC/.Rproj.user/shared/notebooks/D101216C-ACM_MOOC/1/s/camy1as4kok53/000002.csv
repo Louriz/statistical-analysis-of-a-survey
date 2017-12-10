@@ -1,0 +1,4 @@
+"0","# Choisir que les personnes qui ont suivi des moocs et qu'ils l'ont terminé ou pas"
+"0","data_suivi<-filter(my_data2,a_suivi  %in% c(""Oui, je l'ai suivi mais je ne l'ai pas terminé"", ""Oui, je l'ai suivi et j'ai réussi"" ))"
+"0","#Supprimer chaque colonne qui est totalement des NaN ( en fait ce sont celle de la partie: jamais suivi)"
+"0","data_suivi<-data_suivi[ , ! apply( data_suivi , 2 , function(x) all(is.na(x)) ) ]"

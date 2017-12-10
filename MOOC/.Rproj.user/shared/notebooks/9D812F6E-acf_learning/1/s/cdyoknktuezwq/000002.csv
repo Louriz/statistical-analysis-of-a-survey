@@ -1,0 +1,4 @@
+"0","for (i in 1:4) {"
+"0","  plot(poison.active[,i], main = colnames(poison.active)[i],"
+"0","       ylab = ""Count"", col=""steelblue"", las = 2)"
+"0","  }"

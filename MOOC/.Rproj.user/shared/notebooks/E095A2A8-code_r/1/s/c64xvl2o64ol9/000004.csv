@@ -1,0 +1,5 @@
+"0","data_jamais<-filter(my_data2,a_suivi==""Jamais"")"
+"0","# supprimer les colonnes avec que de Nans :"
+"0","data_jamais<-data_jamais[ , ! apply( data_jamais , 2 , function(x) all(is.na(x)) ) ]"
+"0","# Write CSV in R"
+"0","write.csv(data_jamais, file = ""data_jamais.csv"")"

@@ -1,0 +1,24 @@
+{
+    "collab_server" : "",
+    "contents" : "",
+    "created" : 1510265066484.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "266542756",
+    "id" : "DF204D25",
+    "lastKnownWriteTime" : 1511010188,
+    "last_content_update" : -2147483648,
+    "path" : "C:/Users/pc/Desktop/TELECOM BRETGANE/Formation Télécom Bretagne/3A/F3B stat/projet_stat/MOOC/code_r.Rmd",
+    "project_path" : "code_r.Rmd",
+    "properties" : {
+        "chunk_output_type" : "inline",
+        "cursorPosition" : "11,25",
+        "scrollLine" : "4",
+        "tempName" : "Untitled1"
+    },
+    "relative_order" : 1,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_markdown"
+}

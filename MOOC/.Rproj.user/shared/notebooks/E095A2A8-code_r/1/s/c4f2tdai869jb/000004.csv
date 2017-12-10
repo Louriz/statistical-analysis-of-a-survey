@@ -1,0 +1,1 @@
+"0","boxplot(data_suivi$satisfaction~data_suivi$vacances_etude,data=data_suivi, main=""Distribution du temps alloué par cours vs vacances_etudes"",ylab=""temps alloué par cours"", xlab=""vacances_etudes"",las=2)"

@@ -1,0 +1,1 @@
+"0","res_francais<-ddply(francais,~pays,summarise,mean=mean(satisfaction),sd=sd(satisfaction))"

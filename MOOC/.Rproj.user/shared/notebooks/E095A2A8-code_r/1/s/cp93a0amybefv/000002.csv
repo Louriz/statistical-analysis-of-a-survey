@@ -1,0 +1,1 @@
+"0","boxplot(data_suivi$satisfaction~data_suivi$sexe,data=data_suivi, main=""Distribution de la satisfaction vs background"",ylab=""satisfaction"", xlab=""sexe"",las=2)"

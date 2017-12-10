@@ -1,0 +1,2 @@
+"0","count3 <- table(data_suivi$mooc_inclu_etude, data_suivi$a_suivi)"
+"0","barplot(count3, main=""proportion terminé/non par mooc_inclu_etude"", xlab=""a_suivi"", col=c(""blue"",""red""),legend = rownames(count3),las=2)"

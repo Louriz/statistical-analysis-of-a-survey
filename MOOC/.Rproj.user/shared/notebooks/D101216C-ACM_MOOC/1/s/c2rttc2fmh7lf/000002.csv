@@ -1,0 +1,3 @@
+"0","final_data<- data_suivi[, c(""motivation_certificat"", ""trouver_emploi"",""vacances_etude"" ,""mooc_inclu_etude"",""edt_chargee"" ,""videos_cours"" , ""transcription""  ,  ""diapositives_cours""  ,      "
+"0"," ""forum_discussion"" ,  ""examens_exercices""  ,    ""accompagnement_pedagogique"", ""aides_financiere"" ,         "
+"0","""outils_exercice"" ,   ""sciences_donnees"" ,""informatique"" ,""sciences_physiques"" , ""business""  ,  ""arts"",""langues"" ,""sciences_sociales"" ,""background"",""sexe"",""a_suivi"",""age"",""prix"",""satisfaction"",""temps_alloue_cours"",""nbr_certificat"")]"

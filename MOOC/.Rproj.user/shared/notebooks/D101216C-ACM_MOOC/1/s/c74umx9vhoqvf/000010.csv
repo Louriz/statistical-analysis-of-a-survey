@@ -1,0 +1,5 @@
+"0","res.mca <-MCA(final_data[-c(81),],"
+"0","              quanti.sup = c(24,25,26,27,28),"
+"0","              quali.sup = c(22,23),"
+"0","              graph = FALSE,"
+"0","              ncp = 10)"

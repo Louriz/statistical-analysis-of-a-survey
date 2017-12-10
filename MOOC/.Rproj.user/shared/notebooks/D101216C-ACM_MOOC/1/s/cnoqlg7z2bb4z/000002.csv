@@ -1,0 +1,2 @@
+"0","# On va garder 10 composantes principale pour cette étude."
+"0","res.mca <- MCA (data_suivi.active, graph = FALSE,ncp = 10)"
